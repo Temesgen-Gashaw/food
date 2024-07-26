@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Article from "./components/Article";
+import Cart from "./components/Cart";
+import FoodN from "./components/Foodn";
+
+import AuthcontextProvider from "./components/authContext";
 
 function App() {
+  const [neww, setneww] = useState(0);
+
+  const foodhandler = (item) => {
+    const newx = item;
+    setneww(newx);
+  };
+  console.log(neww);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className=" min-h-screen pt-3  "
+      style={{ backgroundImage: "url('/images/food.jpg')" }}
+    >
+      <AuthcontextProvider>
+        <Cart neww={neww}></Cart>
+        <Article></Article>
+        <FoodN onfood={foodhandler}></FoodN>
+      </AuthcontextProvider>
     </div>
   );
 }
