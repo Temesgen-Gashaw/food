@@ -1,25 +1,39 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./authContext";
 
-const FoodForm = ({ name, price, onfood }) => {
+const FoodForm = ({ name }) => {
   const [enteredAmount, setenteredAmount] = useState("");
-  const [amount, setamount] = useState(0);
-  const { onadd, eachcount, oneachadd } = useContext(AuthContext);
-  useEffect(() => {
-    onfood(amount);
-  }, [amount]);
+
+  const { onadd, oneachadd } = useContext(AuthContext);
+
   const amounthandler = (event) => {
     setenteredAmount(event.target.value);
   };
   const addhandler = (e) => {
     e.preventDefault();
-    onadd(enteredAmount);
-    setamount(amount + Number(enteredAmount));
-    if (enteredAmount !== "") {
-      const newarr = [{ name, price }];
 
-      oneachadd(newarr);
+    onadd(enteredAmount);
+
+    if (enteredAmount !== "") {
+      const get = async () => {
+        const res = await fetch(
+          "https://food-order-18898-default-rtdb.firebaseio.com/food/-O3gqhIo1Jo6XEbq0avr.json"
+        );
+        const data = await res.json();
+
+        const updated = data.map((item, ind) => {
+          return {
+            name: item.name,
+            enteredAmount: 0,
+          };
+        });
+        const newarr = [{ name, enteredAmount }];
+        console.log(updated);
+        oneachadd(updated, newarr);
+      };
+      get();
     }
+    setenteredAmount("");
   };
 
   return (

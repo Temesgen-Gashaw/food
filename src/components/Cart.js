@@ -1,21 +1,25 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "./authContext";
-import Card from "./card";
+
 import Modal from "../Modal";
 
-const Cart = ({ neww }) => {
+const Cart = () => {
   const [cart, setcart] = useState(false);
-  const { count, eachcount } = useContext(AuthContext);
+  const { count } = useContext(AuthContext);
   const carthandler = () => {
-    setcart(true);
+    setcart(!cart);
   };
+  const oncarthandler = (x) => {
+    setcart(x);
+  };
+
   return (
-    <div>
-      <div className="fixed top-0 left-0 w-full bg-amber-900 flex justify-around items-center  h-[4rem] ">
+    <div className=" absolute w-full z-10">
+      <div className="w-[100%] bg-amber-900 flex justify-around items-center  h-[4rem] z-9">
         <div className="text-2xl font-bold">ReactMeals</div>
         <div
           onClick={carthandler}
-          className="text-white rounded-full bg-gray-700 px-7 h-[70%] flex items-center opacity-[70%] z-10 "
+          className="text-white rounded-full bg-gray-700 px-7 h-[70%] flex items-center opacity-[70%] cursor-pointer  "
         >
           <svg
             className="mr-2 text-white z-20"
@@ -35,8 +39,8 @@ const Cart = ({ neww }) => {
           <span className="ml-2 rounded-full bg-amber-700 px-3">{count}</span>
         </div>
       </div>
-      <div className="pt-10">{<Card neww={neww}></Card>}</div>
-      <div>{cart && <Modal></Modal>}</div>
+
+      <div>{cart && <Modal oncart={oncarthandler}></Modal>}</div>
     </div>
   );
 };
